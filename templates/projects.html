@@ -1,1 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My GitHub Projects</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            line-height: 1.5;
+        }
 
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+
+        .page-header {
+            margin-bottom: 30px;
+        }
+
+        .header-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            border: 3px solid #007bff;
+        }
+
+        .user-details h1 {
+            font-size: 2.2rem;
+            color: #007bff;
+            margin: 0;
+        }
+
+        .user-details p {
+            margin: 5px 0 0 0;
+            color: #666;
+        }
+
+        .header-actions button {
+            padding: 8px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.2s;
+            background-color: white;
+        }
+
+        .btn-logout {
+            background-color: #dc3545;
+            color: white;
+            border: none;
+        }
+
+        .btn-logout:hover {
+            background-color: #c82333;
+        }
+
+        .stats-bar {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 15px;
+            display: flex;
+            justify-content: space-around;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-item h3 {
+            font-size: 1.8rem;
+            color: #007bff;
+            margin-bottom: 5px;
+        }
+
+        .stat-item p {
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .filter-box {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .search-input {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1rem;
+            flex-grow: 1;
+            min-width: 250px;
+        }
+
+        .filter-button {
+            padding: 10px 15px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            background-color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .filter-button:hover {
+            background-color: #f0f0f0;
+        }
+
+        .section-title {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .project-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            transition: border-color 0.2s, transform 0.2s;
+            display: flex;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .project-card:hover {
+            border-color: #007bff;
+            transform: translateY(-2px);
+        }
+
+        .project-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 10px;
+        }
+
+        .project-card h4 {
+            font-size: 1.2rem;
+            margin: 0;
+            color: #007bff;
+        }
+
+        .project-card p.description {
+            color: #666;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+
+        .project-tags {
+            margin-bottom: 15px;
+        }
+
+        .tag {
+            display: inline-block;
+            background-color: #eee;
+            color: #555;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-right: 5px;
+            margin-bottom: 5px;
+        }
+
+        .project-footer {
+            border-top: 1px solid #eee;
+            padding-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-stats {
+            display: flex;
+            gap: 15px;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px;
+            font-size: 1.2rem;
+            color: #666;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #007bff;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 20px auto;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+            border: 1px solid #f5c6cb;
+        }
+
+        @media (max-width: 600px) {
+            .header-top {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            .header-actions {
+                margin-top: 10px;
+            }
+            .stats-bar {
+                flex-direction: column;
+            }
+            .filter-row {
+                flex-direction: column;
+            }
+            .filter-button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="page-header">
+            <div class="header-top">
+                <div class="user-info">
+                    <img src="" alt="User Avatar" class="user-avatar" id="userAvatar">
+                    <div class="user-details">
+                        <h1 id="userName">Loading...</h1>
+                        <p id="userEmail"></p>
+                        <p id="githubUsername"></p>
+                    </div>
+                </div>
+                <div class="header-actions">
+                    <button class="btn-logout" onclick="handleLogout()">Logout</button>
+                </div>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <h3 id="totalRepos">0</h3>
+                    <p>Total Repositories</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="totalStars">0</h3>
+                    <p>Total Stars</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="totalForks">0</h3>
+                    <p>Total Forks</p>
+                </div>
+                <div class="stat-item">
+                    <h3 id="publicRepos">0</h3>
+                    <p>Public Repos</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="filter-box">
+            <div class="filter-row">
+                <input type="text" class="search-input" id="searchInput" placeholder="Search repositories..." oninput="filterProjects()">
+                <button class="filter-button" onclick="sortByStars()">Sort by Stars</button>
+                <button class="filter-button" onclick="sortByUpdated()">Sort by Updated</button>
+                <button class="filter-button" onclick="sortByName()">Sort by Name</button>
+            </div>
+        </div>
+
+        <div class="projects-container">
+            <h2 class="section-title">My Repositories <span id="projectCount">(Loading...)</span></h2>
+            
+            <div id="loadingState" class="loading">
+                <div class="spinner"></div>
+                <p>Loading your GitHub repositories...</p>
+            </div>
+
+            <div id="errorState" style="display: none;"></div>
+
+            <div class="projects-grid" id="projectsGrid"></div>
+        </div>
+    </div>
+
+    <script>
+        let allRepos = [];
+        let filteredRepos = [];
+        let userData = null;
+
+        async function init() {
+            const storedUser = localStorage.getItem('githubTrackerUser');
+            
+            if (!storedUser) {
+                window.location.href = 'home.html';
+                return;
+            }
+
+            userData = JSON.parse(storedUser);
+            displayUserInfo();
+            await loadGitHubData();
+        }
+
+        function displayUserInfo() {
+            document.getElementById('userName').textContent = userData.name;
+            document.getElementById('userEmail').textContent = userData.email;
+            document.getElementById('githubUsername').textContent = '@' + userData.github;
+            document.getElementById('userAvatar').src = userData.avatarUrl;
+        }
+
+        async function loadGitHubData() {
+            try {
+                const reposResponse = await fetch('https://api.github.com/users/' + userData.github + '/repos?per_page=100');
+                
+                if (!reposResponse.ok) {
+                    throw new Error('Failed to fetch repositories');
+                }
+
+                allRepos = await reposResponse.json();
+                filteredRepos = allRepos.slice();
+
+                const totalStars = allRepos.reduce(function(sum, repo) {
+                    return sum + repo.stargazers_count;
+                }, 0);
+                
+                const totalForks = allRepos.reduce(function(sum, repo) {
+                    return sum + repo.forks_count;
+                }, 0);
+
+                document.getElementById('totalRepos').textContent = allRepos.length;
+                document.getElementById('totalStars').textContent = totalStars;
+                document.getElementById('totalForks').textContent = totalForks;
+                
+                const publicCount = allRepos.filter(function(r) {
+                    return !r.private;
+                }).length;
+                document.getElementById('publicRepos').textContent = publicCount;
+
+                document.getElementById('loadingState').style.display = 'none';
+                renderProjects();
+            } catch (error) {
+                document.getElementById('loadingState').style.display = 'none';
+                document.getElementById('errorState').style.display = 'block';
+                document.getElementById('errorState').innerHTML = '<div class="error"><strong>Error loading repositories:</strong> ' + error.message + '<br><br><button class="filter-button" onclick="loadGitHubData()">Retry</button></div>';
+            }
+        }
+
+        function renderProjects() {
+            const grid = document.getElementById('projectsGrid');
+            const projectCountSpan = document.getElementById('projectCount');
+
+            grid.innerHTML = '';
+
+            if (filteredRepos.length === 0) {
+                grid.innerHTML = '<p style="text-align: center; margin-top: 30px; font-style: italic;">No repositories found.</p>';
+            } else {
+                filteredRepos.forEach(function(repo) {
+                    grid.innerHTML += createProjectCard(repo);
+                });
+            }
+
+            projectCountSpan.textContent = '(Showing ' + filteredRepos.length + ' repositories)';
+        }
+
+        function createProjectCard(repo) {
+            const description = repo.description || 'No description provided';
+            const language = repo.language || 'Unknown';
+            const updatedDate = new Date(repo.updated_at).toLocaleDateString();
+
+            const topics = repo.topics || [];
+            const tagsHtml = topics.slice(0, 5).map(function(tag) {
+                return '<span class="tag">' + tag + '</span>';
+            }).join('');
+            
+            const languageTag = '<span class="tag">' + language + '</span>';
+
+            return '<div class="project-card" onclick="window.open(\'' + repo.html_url + '\', \'_blank\')">' +
+                '<div class="project-header">' +
+                    '<h4>' + repo.name + '</h4>' +
+                '</div>' +
+                '<p class="description">' + description + '</p>' +
+                '<div class="project-tags">' +
+                    languageTag +
+                    tagsHtml +
+                '</div>' +
+                '<div class="project-footer">' +
+                    '<div class="project-stats">' +
+                        '<span>⭐ ' + repo.stargazers_count + '</span>' +
+                        '<span>🔀 ' + repo.forks_count + '</span>' +
+                    '</div>' +
+                    '<div style="font-size: 0.8rem; color: #999;">' +
+                        'Updated: ' + updatedDate +
+                    '</div>' +
+                '</div>' +
+            '</div>';
+        }
+
+        function filterProjects() {
+            const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredRepos = allRepos.filter(function(repo) {
+                const nameMatch = repo.name.toLowerCase().indexOf(searchTerm) !== -1;
+                const descMatch = (repo.description || '').toLowerCase().indexOf(searchTerm) !== -1;
+                const topicsMatch = (repo.topics || []).some(function(t) {
+                    return t.toLowerCase().indexOf(searchTerm) !== -1;
+                });
+                
+                return nameMatch || descMatch || topicsMatch;
+            });
+
+            renderProjects();
+        }
+
+        function sortByStars() {
+            filteredRepos.sort(function(a, b) {
+                return b.stargazers_count - a.stargazers_count;
+            });
+            renderProjects();
+        }
+
+        function sortByUpdated() {
+            filteredRepos.sort(function(a, b) {
+                return new Date(b.updated_at) - new Date(a.updated_at);
+            });
+            renderProjects();
+        }
+
+        function sortByName() {
+            filteredRepos.sort(function(a, b) {
+                return a.name.localeCompare(b.name);
+            });
+            renderProjects();
+        }
+
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                localStorage.removeItem('githubTrackerUser');
+                window.location.href = 'home.html';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
