@@ -1,1 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>GitHub Contribution Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <!-- Base CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='base.css') }}">
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="nav-left">
+            <span class="logo">🚀 GitHub Tracker</span>
+        </div>
+        <div class="nav-right">
+            <a href="/">Home</a>
+            <a href="/leaderboard">Leaderboard</a>
+            <a href="/profile">Profile</a>
+            <a href="/projects">Projects</a>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="page-container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p>© 2025 GitHub Contribution Tracker · OSPC</p>
+    </footer>
+
+</body>
+</html>

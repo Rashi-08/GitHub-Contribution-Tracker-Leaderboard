@@ -1,1 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Leaderboard | GitHub Tracker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+    <link rel="stylesheet" href="{{ url_for('static', filename='leaderboard.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+    <nav class="navbar">
+        <div class="logo">🏆 Leaderboard</div>
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/leaderboard" class="active">Leaderboard</a>
+            <a href="/profile">Profile</a>
+            <a href="/projects">Projects</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1>Top Contributors</h1>
+        <p>Ranked by GitHub activity & engagement</p>
+    </section>
+
+    <section class="leaderboard-container">
+        <table class="leaderboard">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>User</th>
+                    <th>Repos</th>
+                    <th>Followers</th>
+                    <th>Score</th>
+                </tr>
+            </thead>
+            <tbody id="leaderboard-body">
+                <!-- Filled by JS -->
+            </tbody>
+        </table>
+    </section>
+
+    <script src="{{ url_for('static', filename='leaderboard.js') }}"></script>
+</body>
+</html>
