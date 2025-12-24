@@ -1,1 +1,141 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #020617, #0f172a);
+    color: #e5e7eb;
+    min-height: 100vh;
+}
+
+/* Navbar */
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 18px 40px;
+    background: rgba(15, 23, 42, 0.85);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #1e293b;
+}
+
+.logo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #60a5fa;
+}
+
+.nav-links a {
+    margin-left: 22px;
+    text-decoration: none;
+    color: #e5e7eb;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.nav-links a:hover,
+.nav-links a.active {
+    color: #60a5fa;
+}
+
+/* Hero */
+.hero {
+    text-align: center;
+    padding: 60px 20px 30px;
+}
+
+.hero h1 {
+    font-size: 42px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.hero p {
+    color: #94a3b8;
+    font-size: 16px;
+}
+
+/* Leaderboard */
+.leaderboard-container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 30px;
+}
+
+.leaderboard {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgba(15, 23, 42, 0.75);
+    backdrop-filter: blur(12px);
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 30px 60px rgba(0,0,0,0.4);
+}
+
+.leaderboard thead {
+    background: rgba(2, 6, 23, 0.9);
+}
+
+.leaderboard th {
+    padding: 18px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 14px;
+    color: #cbd5f5;
+}
+
+.leaderboard td {
+    padding: 18px;
+    border-top: 1px solid #1e293b;
+    font-size: 15px;
+}
+
+.leaderboard tbody tr {
+    transition: background 0.25s ease, transform 0.25s ease;
+}
+
+.leaderboard tbody tr:hover {
+    background: rgba(96, 165, 250, 0.08);
+    transform: scale(1.01);
+}
+
+/* User cell */
+.user {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+}
+
+.avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #60a5fa, #818cf8);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: #020617;
+}
+
+.username {
+    font-weight: 600;
+}
+
+/* Rank badges */
+.rank {
+    font-weight: 700;
+}
+
+.rank.gold { color: #facc15; }
+.rank.silver { color: #e5e7eb; }
+.rank.bronze { color: #fb923c; }
+
+/* Score */
+.score {
+    font-weight: 700;
+    color: #60a5fa;
+}
