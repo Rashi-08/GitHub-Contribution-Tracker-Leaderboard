@@ -1,14 +1,20 @@
+from dotenv import load_dotenv
+import os
+
+load_dotenv(dotenv_path=os.path.join(os.path.dirname(__file__), ".env"), override=True)
+print("DEBUG GITHUB_CLIENT_ID:", os.getenv("GITHUB_CLIENT_ID"))
+
 from flask import Flask, render_template, redirect, request, session
 import requests
-
 from routers.profile import profile_bp
 
 app = Flask(__name__)
-app.secret_key = "dev-secret-key"
+app.secret_key = os.getenv("FLASK_SECRET_KEY")
 
-GITHUB_CLIENT_ID = "Ov23liBF0Qu16ZiUL6FM"
-GITHUB_CLIENT_SECRET = "80981731563ac0a804d16721bc5be662c90f5e69"
+GITHUB_CLIENT_ID = os.getenv("GITHUB_CLIENT_ID")
+GITHUB_CLIENT_SECRET = os.getenv("GITHUB_CLIENT_SECRET")
 
+# Register blueprint
 app.register_blueprint(profile_bp, url_prefix="/api")
 
 
@@ -30,6 +36,10 @@ def login():
 def callback():
     code = request.args.get("code")
 
+    if not code:
+        return "Authorization failed", 400
+
+    # Exchange code for access token
     token_response = requests.post(
         "https://github.com/login/oauth/access_token",
         headers={"Accept": "application/json"},
@@ -40,7 +50,13 @@ def callback():
         },
     )
 
-    session["access_token"] = token_response.json().get("access_token")
+    token_json = token_response.json()
+    access_token = token_json.get("access_token")
+
+    if not access_token:
+        return "Failed to retrieve access token", 400
+
+    session["access_token"] = access_token
 
     return redirect("/profile")
 
@@ -59,7 +75,6 @@ def leaderboard():
 def projects():
     return render_template("projects.html")
 
-print(app.url_map)
 
 if __name__ == "__main__":
     app.run(debug=True)
