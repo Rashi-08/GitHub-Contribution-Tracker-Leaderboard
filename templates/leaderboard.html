@@ -1,47 +1,54 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Leaderboard | GitHub Tracker</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+{% extends "base.html" %}
 
-    <link rel="stylesheet" href="{{ url_for('static', filename='leaderboard.css') }}">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-</head>
-<body>
+{% block title %}Leaderboard | GitHub Tracker{% endblock %}
 
-    <nav class="navbar">
-        <div class="logo">🏆 Leaderboard</div>
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/leaderboard" class="active">Leaderboard</a>
-            <a href="/profile">Profile</a>
-            <a href="/projects">Projects</a>
-        </div>
-    </nav>
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='leaderboard.css') }}">
+{% endblock %}
 
-    <section class="hero">
-        <h1>Top Contributors</h1>
-        <p>Ranked by GitHub activity & engagement</p>
-    </section>
+{% block content %}
 
-    <section class="leaderboard-container">
-        <table class="leaderboard">
-            <thead>
-                <tr>
-                    <th>#</th>
-                    <th>User</th>
-                    <th>Repos</th>
-                    <th>Followers</th>
-                    <th>Score</th>
-                </tr>
-            </thead>
-            <tbody id="leaderboard-body">
-                <!-- Filled by JS -->
-            </tbody>
-        </table>
-    </section>
+<section class="hero">
+    <h1>Top Contributors</h1>
+    <p>Ranked by GitHub activity & engagement</p>
+</section>
 
-    <script src="{{ url_for('static', filename='leaderboard.js') }}"></script>
-</body>
-</html>
+<section class="insights-section">
+    <h2>Quick Insights</h2>
+    <div class="insights-grid" id="insights-grid"></div>
+</section>
+
+<section class="filters-section">
+    <div class="filters-header">Filter & Sort</div>
+    <div class="filters-row">
+        <!-- SAME FILTER HTML YOU ALREADY HAVE -->
+    </div>
+</section>
+
+<section class="leaderboard-container">
+    <table class="leaderboard">
+        <thead>
+            <tr>
+                <th>Rank</th>
+                <th>User</th>
+                <th>Repos</th>
+                <th>Stars</th>
+                <th>Commits</th>
+                <th>Followers</th>
+                <th>Score</th>
+                <th>Projects</th>
+            </tr>
+        </thead>
+        <tbody id="leaderboard-body"></tbody>
+    </table>
+</section>
+
+<section class="compare-section">
+    <!-- SAME COMPARE HTML -->
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script src="{{ url_for('static', filename='leaderboard.js') }}"></script>
+{% endblock %}
