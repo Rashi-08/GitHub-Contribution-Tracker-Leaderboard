@@ -153,29 +153,6 @@
             transform: none;
         }
 
-        .info-box {
-            background: #f6f8fa;
-            border: 1px solid #d0d7de;
-            border-radius: 10px;
-            padding: 16px;
-            margin-top: 25px;
-        }
-
-        .info-box-title {
-            font-weight: 600;
-            color: #1f2328;
-            margin-bottom: 8px;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-
-        .info-box-text {
-            font-size: 14px;
-            color: #656d76;
-            line-height: 1.6;
-        }
-
         .loading-overlay {
             position: fixed;
             top: 0;
@@ -220,7 +197,6 @@
             font-weight: 600;
         }
 
-        /* Success message */
         .success-message {
             position: fixed;
             top: 20px;
@@ -252,7 +228,6 @@
             display: flex;
         }
 
-        /* Responsive */
         @media (max-width: 640px) {
             .login-container {
                 padding: 30px 25px;
@@ -329,7 +304,6 @@
         </form>
     </div>
 
-    <!-- Loading Overlay -->
     <div class="loading-overlay" id="loadingOverlay">
         <div class="loading-content">
             <div class="spinner"></div>
@@ -337,17 +311,12 @@
         </div>
     </div>
 
-    <!-- Success Message -->
     <div class="success-message" id="successMessage">
         <span>✓</span>
         <span>Profile saved successfully!</span>
     </div>
 
     <script>
-        window.addEventListener('DOMContentLoaded', function() {
-            
-        });
-
         function validateEmail(email) {
             return email.endsWith('@vitstudent.ac.in');
         }
@@ -423,9 +392,9 @@
                 localStorage.setItem('githubTrackerUser', JSON.stringify(userData));
 
                 document.getElementById('loadingOverlay').classList.remove('show');
-
                 showSuccessMessage();
 
+                // FIXED: Changed from '/leaderboard' to 'leaderboard.html'
                 setTimeout(() => {
                     window.location.href = '/leaderboard';
                 }, 1000);
