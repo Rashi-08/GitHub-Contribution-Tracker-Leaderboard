@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard - GitHub Tracker</title>
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <nav class="nav-icons">
+        <button class="nav-btn" onclick="window.location.href='index.html'" title="Dashboard">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </button>
+        <button class="nav-btn active" onclick="window.location.href='leaderboard.html'" title="Leaderboard">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+            <path d="M4 22h16"/>
+            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+            <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
+          </svg>
+        </button>
+        <button class="nav-btn" onclick="window.location.href='profile.html'" title="Profile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </button>
+        <button class="nav-btn nav-btn-logout" id="logoutBtn" title="Logout">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="content-wrapper">
+      <div class="leaderboard-page">
+        
+        <!-- Header -->
+        <div class="page-header">
+          <div>
+            <h1>
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display: inline-block; vertical-align: middle; margin-right: 8px; color: #a855f7;">
+                <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+                <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+                <path d="M4 22h16"/>
+                <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+                <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+                <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
+              </svg>
+              Leaderboard
+            </h1>
+            <p>Top contributors ranked by their activity score</p>
+          </div>
+          <div class="header-stats">
+            <div class="stat-pill">
+              <span class="stat-label">Total Users</span>
+              <span id="totalUsers" class="stat-value">0</span>
+            </div>
+            <div class="stat-pill">
+              <span class="stat-label">Your Rank</span>
+              <span id="yourRank" class="stat-value">-</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Leaderboard List -->
+        <div class="leaderboard-container">
+          <div id="leaderboardList" class="leaderboard-list">
+            <div class="loading-state">Loading leaderboard...</div>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script src="api.js"></script>
+  <script>
+    const state = {
+      token: localStorage.getItem('auth_token'),
+      currentUser: null
+    };
+
+    // Medal SVGs
+    const medalSVGs = {
+      gold: `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="display: inline-block;">
+        <circle cx="12" cy="12" r="8" fill="#FFD700" stroke="#FFA500" stroke-width="2"/>
+        <text x="12" y="16" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">1</text>
+      </svg>`,
+      silver: `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="display: inline-block;">
+        <circle cx="12" cy="12" r="8" fill="#C0C0C0" stroke="#A8A8A8" stroke-width="2"/>
+        <text x="12" y="16" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">2</text>
+      </svg>`,
+      bronze: `<svg width="32" height="32" viewBox="0 0 24 24" fill="none" style="display: inline-block;">
+        <circle cx="12" cy="12" r="8" fill="#CD7F32" stroke="#A0522D" stroke-width="2"/>
+        <text x="12" y="16" text-anchor="middle" fill="#fff" font-size="10" font-weight="bold">3</text>
+      </svg>`
+    };
+
+    // Check auth
+    async function checkAuth() {
+      if (!state.token) {
+        window.location.href = 'index.html';
+        return false;
+      }
+
+      try {
+        const userData = await api.getCurrentUser(state.token);
+        if (!userData.is_logged) {
+          window.location.href = 'index.html';
+          return false;
+        }
+        state.currentUser = userData;
+        return true;
+      } catch (error) {
+        console.error('Auth failed:', error);
+        localStorage.removeItem('auth_token');
+        window.location.href = 'index.html';
+        return false;
+      }
+    }
+
+    // Load leaderboard
+    async function loadLeaderboard() {
+      const leaderboardList = document.getElementById('leaderboardList');
+      
+      try {
+        const { leaderboard } = await api.getLeaderboard();
+        
+        if (leaderboard.length === 0) {
+          leaderboardList.innerHTML = '<div class="empty-state">No users on leaderboard yet</div>';
+          return;
+        }
+
+        // Update header stats
+        document.getElementById('totalUsers').textContent = leaderboard.length;
+        
+        // Find current user rank
+        const userRankIndex = leaderboard.findIndex(u => 
+          state.currentUser && u.username === state.currentUser.username
+        );
+        document.getElementById('yourRank').textContent = 
+          userRankIndex >= 0 ? `#${userRankIndex + 1}` : '-';
+
+        // Render leaderboard
+        leaderboardList.innerHTML = leaderboard.map((user, index) => {
+          const isCurrentUser = state.currentUser && user.username === state.currentUser.username;
+          const rank = index + 1;
+          let rankDisplay = '';
+          
+          if (rank === 1) rankDisplay = medalSVGs.gold;
+          else if (rank === 2) rankDisplay = medalSVGs.silver;
+          else if (rank === 3) rankDisplay = medalSVGs.bronze;
+          else rankDisplay = `<span style="font-size: 24px; font-weight: 700;">#${rank}</span>`;
+
+          return `
+            <div class="leaderboard-item ${isCurrentUser ? 'current-user' : ''}" 
+                 data-username="${user.username}">
+              <div class="rank-badge">
+                <span class="rank-display">${rankDisplay}</span>
+              </div>
+              
+              <div class="user-details">
+                <div class="user-header">
+                  <span class="username">${user.username}</span>
+                  ${isCurrentUser ? '<span class="you-badge">YOU</span>' : ''}
+                </div>
+                <div class="user-stats">
+                  <span class="stat-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                      <path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/>
+                    </svg>
+                    ${user.total_stars || 0} stars
+                  </span>
+                  <span class="stat-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+                      <circle cx="9" cy="7" r="4"/>
+                      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+                      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+                    </svg>
+                    ${user.followers || 0} followers
+                  </span>
+                  <span class="stat-item">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                      <path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/>
+                    </svg>
+                    ${user.total_projects || 0} repos
+                  </span>
+                </div>
+              </div>
+
+              <div class="score-display">
+                <span class="score-value">${Math.round(user.score)}</span>
+                <span class="score-label">points</span>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+        // Add click handlers
+        document.querySelectorAll('.leaderboard-item').forEach(item => {
+          item.addEventListener('click', () => {
+            const username = item.dataset.username;
+            window.location.href = `profile.html?user=${username}`;
+          });
+        });
+
+      } catch (error) {
+        console.error('Failed to load leaderboard:', error);
+        leaderboardList.innerHTML = '<div class="error-state">Failed to load leaderboard. Please try again.</div>';
+      }
+    }
+
+    // Logout handler
+    document.getElementById('logoutBtn').addEventListener('click', async () => {
+      if (!confirm('Are you sure you want to logout?')) return;
+      
+      if (state.token) {
+        await api.logout(state.token);
+      }
+      localStorage.removeItem('auth_token');
+      window.location.href = 'index.html';
+    });
+
+    // Initialize
+    async function init() {
+      const isAuthenticated = await checkAuth();
+      if (isAuthenticated) {
+        await loadLeaderboard();
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
