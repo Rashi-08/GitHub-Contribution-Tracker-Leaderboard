@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub Contribution Tracker</title>
+  <link rel="stylesheet" href="./glass.css">
+</head>
+<body>
+  
+  <!-- Login Modal Overlay -->
+  <div id="loginModal" class="modal">
+  <div class="modal-backdrop"></div>
+  <div class="modal-content">
+    <div class="modal-header">
+      <h1>GitHub Contribution Tracker</h1>
+      <p>Track your contributions and compete on the leaderboard</p>
+    </div>
+    <button id="loginBtn" class="btn-login" data-text="Continue with GitHub">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+      </svg>
+      <span>Continue with GitHub</span>
+    </button>
+  </div>
+</div>
+
+
+  <!-- Main Dashboard -->
+  <div id="dashboard" class="dashboard">
+    
+    <!-- Floating Sidebar -->
+    <aside class="sidebar">
+      <nav class="nav-icons">
+        <button class="nav-btn active" data-view="index" onclick="window.location.href='index.html'"  title="Dashboard">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>
+            <polyline points="9 22 9 12 15 12 15 22"/>
+          </svg>
+        </button>
+        <button class="nav-btn" data-view="leaderboard" onclick="window.location.href='leaderboard.html'" title="Leaderboard">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/>
+            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/>
+            <path d="M4 22h16"/>
+            <path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/>
+            <path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/>
+            <path d="M18 2H6v7a6 6 0 0 0 12 0V2z"/>
+          </svg>
+        </button>
+        <button class="nav-btn" data-view="profile" onclick="window.location.href='profile.html'"  title="Profile">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+        </button>
+        <button class="nav-btn nav-btn-logout" id="logoutBtn" title="Logout">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+            <polyline points="16 17 21 12 16 7"/>
+            <line x1="21" y1="12" x2="9" y2="12"/>
+          </svg>
+        </button>
+      </nav>
+    </aside>
+
+    <!-- Main Content Grid -->
+    <main class="main-grid">
+      
+      <!-- Profile Card (Left, 40%) -->
+      <section class="profile-card">
+        <div class="profile-header">
+          <div id="profileAvatar" class="avatar">
+            <div class="avatar-placeholder"></div>
+          </div>
+          <h2 id="profileName" class="profile-name">Loading...</h2>
+          <p id="profileUsername" class="profile-username">@username</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div id="statFollowers" class="stat-value">0</div>
+            <div class="stat-label">Followers</div>
+          </div>
+          <div class="stat-item">
+            <div id="statRepos" class="stat-value">0</div>
+            <div class="stat-label">Repos</div>
+          </div>
+          <div class="stat-item">
+            <div id="statStars" class="stat-value">0</div>
+            <div class="stat-label">Stars</div>
+          </div>
+        </div>
+
+        <div class="bio-section">
+          <h3 class="section-title">About</h3>
+          <p id="profileBio" class="bio-text">No bio available</p>
+          <div id="profileLocation" class="profile-meta"></div>
+          <div id="profileCompany" class="profile-meta"></div>
+        </div>
+
+        <div class="profile-links">
+          <a id="githubLink" href="#" target="_blank" class="profile-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+            </svg>
+            View on GitHub
+          </a>
+        </div>
+      </section>
+
+      <!-- Main Chart Area (Right, 60%) -->
+      <section class="chart-area">
+        <div class="chart-header">
+          <h2 class="chart-title">Contribution Activity</h2>
+          <div class="chart-legend">
+            <span class="legend-item">
+  <span class="legend-dot" style="background: #1a1a1a;"></span>
+  Less
+</span>
+<span class="legend-item">
+  <span class="legend-dot" style="background: #3d1e52;"></span>
+</span>
+<span class="legend-item">
+  <span class="legend-dot" style="background: #6b2d8f;"></span>
+</span>
+<span class="legend-item">
+  <span class="legend-dot" style="background: #9333ea;"></span>
+</span>
+<span class="legend-item">
+  <span class="legend-dot" style="background: #a855f7;"></span>
+  More
+</span>
+
+          </div>
+        </div>
+        <div id="mainChart" class="chart-container">
+          <!-- Contribution heatmap will be rendered here -->
+          <div class="chart-placeholder">
+            <div class="placeholder-gradient"></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bottom Three Cards -->
+      <section class="stat-card card-projects">
+        <div class="card-header">
+          <h3 class="card-title">Top Projects</h3>
+          <span class="card-badge" id="projectCount">0</span>
+        </div>
+        <div id="topProjects" class="card-content">
+          <div class="loading-state">Loading projects...</div>
+        </div>
+      </section>
+
+      <section class="stat-card card-languages">
+        <div class="card-header">
+          <h3 class="card-title">Languages</h3>
+        </div>
+        <div id="languages" class="card-content">
+          <div class="loading-state">Loading languages...</div>
+        </div>
+      </section>
+
+      <section class="stat-card card-activity">
+        <div class="card-header">
+          <h3 class="card-title">Leaderboard Rank</h3>
+        </div>
+        <div id="leaderboardRank" class="card-content">
+          <div class="loading-state">Calculating rank...</div>
+        </div>
+      </section>
+
+    </main>
+  </div>
+
+  <!-- Scripts -->
+  <script src="api.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
