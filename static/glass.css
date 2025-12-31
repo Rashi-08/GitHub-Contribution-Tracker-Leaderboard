@@ -440,20 +440,28 @@ body {
    CONTRIBUTION GRAPH
    ============================================ */
 
+/* ============================================
+   CONTRIBUTION GRAPH - FIXED
+   ============================================ */
+
 .contribution-graph {
   width: 100%;
   height: 100%;
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+  padding: 0;
 }
 
 .graph-header {
-  margin-bottom: 8px;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-bottom: 12px;
 }
 
 .total-contributions {
-  font-size: 13px;
+  font-size: 14px;
   color: var(--text-secondary);
 }
 
@@ -464,56 +472,67 @@ body {
 
 .months-labels {
   display: flex;
-  gap: 28px;
-  font-size: 10px;
+  justify-content: flex-start;
+  gap: 40px;
+  font-size: 11px;
   color: var(--text-muted);
-  padding-left: 28px;
-  margin-bottom: 4px;
+  padding-left: 32px;
+  margin-bottom: 6px;
+}
+
+.months-labels span {
+  min-width: 48px;
 }
 
 .graph-container {
   display: flex;
-  gap: 8px;
+  gap: 12px;
   flex: 1;
   overflow-x: auto;
   overflow-y: hidden;
-  padding-bottom: 8px;
+  padding-bottom: 10px;
+  align-items: flex-start;
 }
 
 .days-labels {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  font-size: 10px;
+  justify-content: flex-start;
+  gap: 4px;
+  font-size: 11px;
   color: var(--text-muted);
-  min-width: 24px;
-  padding-top: 16px;
+  min-width: 28px;
+  flex-shrink: 0;
+  padding-top: 20px;
 }
 
 .days-labels span {
-  height: 12px;
+  height: 14px;
   display: flex;
   align-items: center;
 }
 
 .contribution-grid {
   display: flex;
-  gap: 3px;
+  gap: 4px;
   flex: 1;
+  min-width: max-content;
 }
 
 .week-column {
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
+  min-width: 14px;
 }
 
 .contribution-day {
-  width: 12px;
-  height: 12px;
-  border-radius: 2px;
+  width: 14px;
+  height: 14px;
+  border-radius: 3px;
   cursor: pointer;
   transition: all 0.15s ease;
+  border: 1px solid transparent;
 }
 
 .contribution-day.empty {
@@ -521,16 +540,20 @@ body {
 }
 
 .contribution-day:hover {
-  transform: scale(1.2);
-  box-shadow: 0 0 8px var(--accent-glow);
+  border-color: rgba(168, 85, 247, 0.8);
+  transform: scale(1.15);
+  z-index: 10;
+  box-shadow: 0 0 10px var(--accent-glow);
 }
 
+/* Contribution levels - clearer distinction */
 .contribution-day.level-0 {
-  background: rgba(255, 255, 255, 0.05);
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .contribution-day.level-1 {
-  background: rgba(168, 85, 247, 0.3);
+  background: rgba(168, 85, 247, 0.25);
 }
 
 .contribution-day.level-2 {
@@ -538,30 +561,49 @@ body {
 }
 
 .contribution-day.level-3 {
-  background: rgba(168, 85, 247, 0.7);
+  background: rgba(168, 85, 247, 0.75);
 }
 
 .contribution-day.level-4 {
   background: var(--accent);
-  box-shadow: 0 0 4px var(--accent-glow);
+  box-shadow: 0 0 6px var(--accent-glow);
 }
 
 .contribution-tooltip {
   position: fixed;
   background: rgba(26, 26, 26, 0.95);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
   border: 1px solid var(--glass-border);
   color: var(--text-primary);
-  padding: 6px 10px;
-  border-radius: 6px;
-  font-size: 11px;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 12px;
   font-weight: 500;
   pointer-events: none;
   transform: translate(-50%, -100%);
   white-space: nowrap;
   z-index: 1000;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+/* Scrollbar for graph container */
+.graph-container::-webkit-scrollbar {
+  height: 6px;
+}
+
+.graph-container::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 3px;
+}
+
+.graph-container::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.graph-container::-webkit-scrollbar-thumb:hover {
+  background: var(--accent-dim);
 }
 
 /* ============================================
