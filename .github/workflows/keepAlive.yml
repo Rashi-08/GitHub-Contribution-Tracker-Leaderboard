@@ -11,5 +11,5 @@ jobs:
     steps:
       - name: Ping Backend Health
         run: |
-          curl -f https://your-backend.onrender.com/health
+          curl -f https://githubtrackerdemo.onrender.com/health
           echo "✅ Backend alive at $(date)"
