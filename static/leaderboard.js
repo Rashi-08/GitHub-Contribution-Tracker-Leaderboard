@@ -1,132 +1,30 @@
-// Sample user data
-let allUsers = [
-    {
-        name: "Sarah Chen",
-        username: "sarahc",
-        repos: 45,
-        stars: 1250,
-        commits: 890,
-        followers: 320,
-        language: "javascript",
-        domain: "web",
-        streak: 12,
-        projects: [
-            { name: "React Dashboard", desc: "Modern admin panel", link: "https://github.com/sarahc/dashboard" },
-            { name: "API Builder", desc: "REST API generator", link: "https://github.com/sarahc/api-builder" },
-            { name: "CSS Framework", desc: "Lightweight CSS", link: "https://github.com/sarahc/css-fw" }
-        ]
-    },
-    {
-        name: "Alex Kumar",
-        username: "alexk",
-        repos: 38,
-        stars: 980,
-        commits: 1050,
-        followers: 280,
-        language: "python",
-        domain: "ai",
-        streak: 8,
-        projects: [
-            { name: "ML Predictor", desc: "Machine learning tool", link: "https://github.com/alexk/ml-pred" },
-            { name: "Data Analyzer", desc: "Python analysis kit", link: "https://github.com/alexk/data-analyze" }
-        ]
-    },
-    {
-        name: "Mike Johnson",
-        username: "mikej",
-        repos: 52,
-        stars: 750,
-        commits: 720,
-        followers: 195,
-        language: "cpp",
-        domain: "devops",
-        streak: 15,
-        projects: [
-            { name: "Docker Manager", desc: "Container management", link: "https://github.com/mikej/docker-mgr" },
-            { name: "CI/CD Pipeline", desc: "Auto deployment", link: "https://github.com/mikej/cicd" }
-        ]
-    },
-    {
-        name: "Emma Davis",
-        username: "emmad",
-        repos: 29,
-        stars: 620,
-        commits: 540,
-        followers: 165,
-        language: "javascript",
-        domain: "mobile",
-        streak: 5,
-        projects: [
-            { name: "Mobile App Kit", desc: "React Native starter", link: "https://github.com/emmad/mobile-kit" },
-            { name: "Push Notifications", desc: "Notification service", link: "https://github.com/emmad/push-notif" }
-        ]
-    },
-    {
-        name: "Ryan Patel",
-        username: "ryanp",
-        repos: 41,
-        stars: 890,
-        commits: 380,
-        followers: 210,
-        language: "python",
-        domain: "ai",
-        streak: 9,
-        projects: [
-            { name: "Neural Net Lib", desc: "Simple neural network", link: "https://github.com/ryanp/neural" },
-            { name: "Image Classifier", desc: "CNN classification", link: "https://github.com/ryanp/img-class" }
-        ]
-    },
-    {
-        name: "Lisa Wang",
-        username: "lisaw",
-        repos: 34,
-        stars: 420,
-        commits: 670,
-        followers: 140,
-        language: "java",
-        domain: "web",
-        streak: 7,
-        projects: [
-            { name: "Spring Boot API", desc: "RESTful service", link: "https://github.com/lisaw/spring-api" }
-        ]
-    },
-    {
-        name: "Tom Wilson",
-        username: "tomw",
-        repos: 27,
-        stars: 580,
-        commits: 445,
-        followers: 125,
-        language: "javascript",
-        domain: "web",
-        streak: 11,
-        projects: [
-            { name: "Vue Dashboard", desc: "Admin panel with Vue", link: "https://github.com/tomw/vue-dash" }
-        ]
-    },
-    {
-        name: "Nina Patel",
-        username: "ninap",
-        repos: 36,
-        stars: 710,
-        commits: 825,
-        followers: 188,
-        language: "python",
-        domain: "ai",
-        streak: 14,
-        projects: [
-            { name: "AI Chatbot", desc: "NLP chatbot", link: "https://github.com/ninap/ai-chat" }
-        ]
-    }
-];
+let allUsers = [];
+let filteredUsers = [];
 
-// Calculate score for each user
-allUsers.forEach(user => {
-    user.score = (user.repos * 10) + (user.stars) + (user.commits) + (user.followers * 2);
-});
+fetch("/api/leaderboard")
+  .then(res => res.json())
+  .then(data => {
+      allUsers = data.map((user, index) => ({
+          id: user.id,
+          name: user.github_username,
+          username: user.github_username,
+          repos: user.public_repos,
+          stars: user.stars,
+          commits: 0, // not implemented yet
+          followers: user.followers,
+          score: user.score,
+          projects: [] // will come later
+      }));
 
-// Copy to filtered array
-let filteredUsers = [...allUsers];
+      filteredUsers = [...allUsers];
+      displayUsers(filteredUsers);
+      generateInsights();
+  })
+  .catch(err => {
+      console.error("Failed to load leaderboard", err);
+  });
+
+ 
 
 // Function to display all users in the table
 function displayUsers(users) {
@@ -420,9 +318,4 @@ document.getElementById('domain-filter').addEventListener('change', applyFilters
 document.getElementById('reset-filters').addEventListener('click', resetFilters);
 document.getElementById('compare-btn').addEventListener('click', compareUsers);
 
-// When page loads, show everything
-window.onload = function() {
-    displayUsers(allUsers);
-    generateInsights();
-    populateCompareDropdowns();
-};
+ 
